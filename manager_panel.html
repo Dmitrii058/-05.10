@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>АвтоМаркет — Единая Панель Управления</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background-color: #f8fafc;">
+
+    <!-- НАВИГАЦИОННАЯ ПАНЕЛЬ С СИНХРОННЫМ ПЕРЕКЛЮЧАТЕЛЕМ -->
+    <header class="main-header" style="background: none; border: none; box-shadow: none; position: relative; z-index: 100;">
+        <div class="header-top" style="background-color: rgba(12, 86, 234, 0.1) !important; border: 2px solid #0c56ea !important; border-radius: 40px; padding: 10px 25px; margin: 10px 15px; display: flex; align-items: center; justify-content: flex-start;">
+            <div class="logo">
+                <span style="font-weight: 800; color: #000000; font-size: 20px;">Авто<span style="color: #0c56ea;">Снабжение</span></span>
+            </div>
+            
+            <!-- ИНТЕРФЕЙСНЫЙ МОСТ -->
+            <div style="margin-left: 30px; display: flex; gap: 10px; background: #ffffff; padding: 4px; border-radius: 30px; border: 1px solid #e2e8f0;">
+                <button id="btn-mode-client" onclick="switchTestingMode('client')" style="border: none; padding: 8px 18px; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                    📱 Экран Клиента (123456@mail.ru)
+                </button>
+                <button id="btn-mode-manager" onclick="switchTestingMode('manager')" style="border: none; padding: 8px 18px; border-radius: 20px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                    💼 Экран Менеджера (manager@mail.ru)
+                </button>
+            </div>
+            
+            <div class="user-menu" style="margin-left: auto; display: flex; align-items: center; gap: 15px;">
+                <a href="glavnaya.html" style="color: #64748b; font-weight: 600; text-decoration: none; font-size: 14px;">На главную</a>
+                <a href="index.html" style="color: #ef4444; font-weight: bold; text-decoration: none; font-size: 14px;">Выход</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container" style="width: 92%; max-width: 1400px; margin-left: auto; margin-right: auto; margin-top: 30px;">
+        
+        <!-- ==========================================================================
+           ВИЗУАЛЬНЫЙ БЛОК 1: ТЕСТИРОВАНИЕ ОТПРАВКИ ОБРАЩЕНИЙ (ЭКРАН КЛИЕНТА)
+           ========================================================================== -->
+        <div id="view-client-zone" style="display: none;">
+            <div class="schedule-card" style="max-width: 700px; margin: 0 auto 30px auto; padding: 30px; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0;">
+                <h2>Добрый день, Иван Иванович!</h2>
+                <p style="color: #64748b; margin-top: 4px; margin-bottom: 25px; font-size: 15px;">
+                    Хотите обратиться к менеджеру? Напишите текст прямо здесь, и он мгновенно отобразится на вкладке менеджера ниже!
+                </p>
+
+                <form onsubmit="inlineSubmitRequest(event)">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;">Контрагент:</label>
+                        <!-- ИСПРАВЛЕНО: Удален жесткий фоновый стиль, мешающий работе styles.css -->
+                        <select id="mgr-client-select" style="width: 100%; padding: 10px; border-radius: 8px; font-weight: 600; font-family: inherit;">
+                            <option>123456@mail.ru (Иван Иванович)</option>
+                        </select>
+                    </div>
+
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px;">Текст вашего запроса</label>
+                        <textarea id="inline-text" style="width: 100%; min-height: 120px; padding: 15px; border-radius: 8px; font-size: 15px; font-family: inherit; resize: vertical;" placeholder="Напишите что-нибудь, например: Нужны колодки на Форд Фокус..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="search-btn" style="background-color: #ea580c; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px; width: 100%;">
+                        🚀 Отправить обращение менеджеру
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- ==========================================================================
+           ВИЗУАЛЬНЫЙ БЛОК 2: ПАНЕЛЬ УПРАВЛЕНИЯ КАРТОЧКАМИ (ЭКРАН МЕНЕДЖЕРА)
+           ========================================================================== -->
+           <div id="view-manager-zone" style="display: none;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px;">
+                
+                <div class="schedule-card" style="padding: 25px; margin: 0; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <h3 style="margin-bottom: 15px; color: #0f172a;">👤 Управление карточкой клиента</h3>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 14px;">Контрагент:</label>
+                        <select id="mgr-client-select" style="width: 100%; padding: 10px; border-radius: 8px; font-weight: 600;">
+                            <option>123456@mail.ru (Иван Иванович)</option>
+                        </select>
+                    </div>
+
+                    <form onsubmit="inlineSaveClientCard(event)">
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 4px; font-size: 13px;">ФИО Клиента</label>
+                            <input type="text" id="mgr-client-name" class="custom-search-input" style="width: 100%; padding: 10px; font-size: 14px;" required>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 4px; font-size: 13px;">Контактный телефон</label>
+                            <input type="text" id="mgr-client-phone" class="custom-search-input" style="width: 100%; padding: 10px; font-size: 14px;" required>
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 4px; font-size: 13px;">Текущий Баланс (₽)</label>
+                            <input type="number" id="mgr-client-balance" class="custom-search-input" style="width: 100%; padding: 10px; font-size: 14px;" required>
+                        </div>
+                        <button type="submit" style="background-color: #16a34a; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%;">
+                            💾 Сохранить изменения в профиль клиента
+                        </button>
+                    </form>
+                </div>
+
+                <div class="orange-muted-card" style="margin: 0; padding: 25px; display: flex; flex-direction: column; justify-content: center; border-left: 5px solid #0c56ea; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    <h3 style="color: #0c56ea;">📊 Статус синхронизации</h3>
+                    <p style="margin-top: 10px; font-size: 15px; line-height: 1.5;">Так как вы тестируете проект локально без хостинга, этот экран объединяет клиентскую базу.</p>
+                    <p style="margin-top: 10px; font-size: 14px; color: #64748b;">Вы можете отправить тикет на экране клиента, переключить вкладку кнопкой сверху — и он мгновенно отобразится в таблице входящих писем.</p>
+                </div>
+            </div>
+            <!-- ТАБЛИЦА ОБРАЩЕНИЙ ВНУТРИ ПАНЕЛИ -->
+            <div class="schedule-card" style="padding: 25px; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 20px;">
+                <h3 style="margin-bottom: 20px; color: #ea580c;">📥 Входящие обращения (Режим Реального Времени)</h3>
+                
+                <div class="table-responsive">
+                    <table class="schedule-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #e2e8f0; background: #f8fafc;">
+                                <th style="padding: 12px;">ID Тикета</th>
+                                <th style="padding: 12px;">Отправитель</th>
+                                <th style="padding: 12px;">Дата</th>
+                                <th style="padding: 12px;">Тема</th>
+                                <th style="padding: 12px;">Содержимое письма</th>
+                                <th style="padding: 12px;">Управление</th>
+                            </tr>
+                        </thead>
+                        <tbody id="live-tickets-body">
+                            <!-- Строки генерируются динамически -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ЕДИНЫЙ СКРИПТ УПРАВЛЕНИЯ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('am_user_name') === null) localStorage.setItem('am_user_name', 'Иван Иванович');
+            if (localStorage.getItem('am_user_phone') === null) localStorage.setItem('am_user_phone', '+7 (999) 123-45-67');
+            if (localStorage.getItem('am_user_balance') === null) localStorage.setItem('am_user_balance', '45200');
+            
+            switchTestingMode('manager');
+        });
+
+        function switchTestingMode(mode) {
+            const clientZone = document.getElementById('view-client-zone');
+            const managerZone = document.getElementById('view-manager-zone');
+            const btnClient = document.getElementById('btn-mode-client');
+            const btnManager = document.getElementById('btn-mode-manager');
+
+            if (mode === 'client') {
+                clientZone.style.display = 'block';
+                managerZone.style.display = 'none';
+                btnClient.style.background = '#ea580c';
+                btnClient.style.color = '#ffffff';
+                btnManager.style.background = '#e2e8f0';
+                btnManager.style.color = '#000000';
+            } else {
+                clientZone.style.display = 'none';
+                managerZone.style.display = 'block';
+                btnManager.style.background = '#0c56ea';
+                btnManager.style.color = '#ffffff';
+                btnClient.style.background = '#e2e8f0';
+                btnClient.style.color = '#000000';
+                
+                loadClientDataToForm();
+                renderLiveTickets();
+            }
+        }
+
+        function loadClientDataToForm() {
+            document.getElementById('mgr-client-name').value = localStorage.getItem('am_user_name');
+            document.getElementById('mgr-client-phone').value = localStorage.getItem('am_user_phone');
+            document.getElementById('mgr-client-balance').value = localStorage.getItem('am_user_balance');
+        }
+
+        function inlineSaveClientCard(event) {
+            event.preventDefault();
+            localStorage.setItem('am_user_name', document.getElementById('mgr-client-name').value);
+            localStorage.setItem('am_user_phone', document.getElementById('mgr-client-phone').value);
+            localStorage.setItem('am_user_balance', document.getElementById('mgr-client-balance').value);
+            alert('Данные карточки успешно перезаписаны в систему снабжения!');
+        }
+
+        function inlineSubmitRequest(event) {
+            event.preventDefault();
+            
+            const subject = document.getElementById('inline-subject').value;
+            const text = document.getElementById('inline-text').value;
+            
+            let tickets = JSON.parse(localStorage.getItem('am_united_local_tickets') || '[]');
+            
+            const newTicket = {
+                id: "TICK-" + Math.floor(1000 + Math.random() * 9000),
+                client: "123456@mail.ru",
+                date: "05.10.2026",
+                subject: subject,
+                text: text
+            };
+
+            tickets.push(newTicket);
+            localStorage.setItem('am_united_local_tickets', JSON.stringify(tickets));
+
+            alert('Обращение зафиксировано! Возвращаемся на экран менеджера.');
+            document.getElementById('inline-text').value = '';
+            switchTestingMode('manager');
+        }
+
+        function renderLiveTickets() {
+            const tbody = document.getElementById('live-tickets-body');
+            if (!tbody) return;
+
+            const tickets = JSON.parse(localStorage.getItem('am_united_local_tickets') || '[]');
+
+            if (tickets.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#64748b; padding:25px; font-weight: 500;">Новых обращений пока не поступало</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            tickets.forEach((ticket, index) => {
+                html += `
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                        <td style="padding: 12px;"><strong>${ticket.id}</strong></td>
+                        <td style="padding: 12px; color: #0c56ea; font-weight: 500;">${ticket.client}</td>
+                        <td style="padding: 12px;">${ticket.date}</td>
+                        <td style="padding: 12px;"><span style="background:#ffedd5; color:#ea580c; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">${ticket.subject}</span></td>
+                        <td style="padding: 12px; max-width:350px; white-space:normal; font-size:13px; color:#334155; line-height: 1.4;">${ticket.text}</td>
+                        <td style="padding: 12px;">
+                            <button onclick="inlineCloseTicket(${index})" style="background:#0c56ea; color:white; border:none; padding:8px 14px; border-radius:6px; font-weight:600; cursor:pointer; font-size:12px;">
+                                Ответить / Закрыть
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function inlineCloseTicket(index) {
+            let tickets = JSON.parse(localStorage.getItem('am_united_local_tickets') || '[]');
+            const answer = prompt("Введите ответ для отправки на почту 123456@mail.ru:");
+            
+            if (answer !== null && answer.trim() !== "") {
+                alert("Ответ зафиксирован. Обращение успешно удалено.");
+                tickets.splice(index, 1);
+                localStorage.setItem('am_united_local_tickets', JSON.stringify(tickets));
+                renderLiveTickets();
+            }
+        }
+    </script>
+</body>
+</html>

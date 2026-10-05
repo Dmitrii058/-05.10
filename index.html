@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>АвтоМаркет — Вход в систему</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- НАВИГАЦИОННАЯ ПАНЕЛЬ СВЕРХУ ПО ГОРИЗОНТАЛИ -->
+    <header class="main-header" style="background: none; border: none; box-shadow: none; position: relative; z-index: 100;">
+        <div class="header-top">
+            
+            <!-- ИСПРАВЛЕНО: Логотип ведет на index.html и просто обновляет страницу входа -->
+            <a href="index.html" class="logo" style="font-size: 22px; white-space: nowrap; margin-right: 25px; display: flex; align-items: center; gap: 8px; text-decoration: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 2px 4px rgba(234, 88, 12, 0.2));">
+                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                    <path d="M12 6v6l4 2"/>
+                    <circle cx="12" cy="12" r="1" fill="#ea580c"/>
+                </svg>
+                <span style="font-weight: 800; letter-spacing: -0.5px; color: #000000;">Авто<span style="color: #ea580c;">Маркет</span></span>
+            </a>
+
+            <!-- ВЫБОР ГОРОДА -->
+            <div class="city-select">
+                <span>Город: </span>
+                <select id="header-city-select">
+                    <option value="Москва" selected>Москва</option>
+                    <option value="Пенза">Пенза</option>
+                    <option value="Санкт-Петербург">Санкт-Петербург</option>
+                </select>
+            </div>
+
+            <!-- ГЛАВНОЕ МЕНЮ НАВИГАЦИИ -->
+            <nav class="main-nav" style="margin-right: auto;">
+                <!-- ИСПРАВЛЕНО: Кнопка ведет на index.html и просто обновляет страницу входа -->
+                <a href="index.html" class="nav-link">Главная</a>
+                
+                <div class="dropdown">
+                    <div class="nav-label" style="cursor: pointer; padding: 10px 15px;">Каталоги ▾</div>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="alert('Для просмотра каталогов необходимо авторизоваться!')">Оригинальный каталог</a>
+                        <a href="#" onclick="alert('Для просмотра каталогов необходимо авторизоваться!')">Китайский каталог</a>
+                        <a href="#" onclick="alert('Для просмотра каталогов необходимо авторизоваться!')">Каталог заменителей</a>
+                        <a href="#" onclick="alert('Для просмотра каталогов необходимо авторизоваться!')">Каталог шин и дисков</a>
+                        <a href="#" onclick="alert('Для просмотра каталогов необходимо авторизоваться!')">Автолампы</a>
+                        <a href="#" onclick="alert('Для просмотра каталогов необходимо авторизоваться!')">Гараж</a>
+                    </div>
+                </div>
+
+                <a href="#" class="nav-link" onclick="alert('Корзина доступна только авторизованным пользователям!')">Корзина</a>
+                
+                <div class="dropdown">
+                    <div class="nav-label" style="cursor: pointer; padding: 10px 15px;">Заказы ▾</div>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="alert('Раздел доступен только после входа!')">Заказы</a>
+                        <a href="#" onclick="alert('Раздел доступен только после входа!')">Оформление возвратов</a>
+                        <a href="#" onclick="alert('Раздел доступен только после входа!')">Оформление рекламаций</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <div class="nav-label" style="cursor: pointer; padding: 10px 15px;">Взаиморасчеты ▾</div>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="alert('Раздел доступен только после входа!')">Финансы</a>
+                        <a href="#" onclick="alert('Раздел доступен только после входа!')">График расчетов</a>
+                    </div>
+                </div>
+
+                <div class="dropdown" style="z-index: 101;">
+                    <a href="#" onclick="alert('Раздел доступен только после входа!')" class="nav-label" style="cursor: pointer; padding: 10px 15px; color: #ea580c; font-weight: bold; text-decoration: none; display: inline-block;">Программы ▾</a>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="alert('Раздел доступен только после входа!')">Программа лояльности</a>
+                        <a href="#" onclick="alert('Раздел доступен только после входа!')">Актуальные акции</a>
+                    </div>
+                </div>
+
+                <a href="#" class="nav-link" onclick="alert('Раздел доступен только после входа!')">Оплата по QR</a>
+            </nav>
+
+            <div class="user-menu"></div>
+        </div>
+    </header>
+    <!-- БЛОК АВТОРИЗАЦИИ СТРОГО ПО ЦЕНТРУ ЭКРАНА -->
+    <div class="login-wrapper" style="display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 260px); padding: 20px;">
+        <div class="login-card" style="max-width: 400px; width: 100%;">
+            <h2>Вход в АвтоМаркет</h2>
+            
+            <form id="loginForm" onsubmit="validateAdminLogin(event)">
+                <div class="form-group-login">
+                    <label for="username">Логин (E-mail или телефон)</label>
+                    <input type="text" id="username" class="login-control" placeholder="example@mail.ru" required>
+                </div>
+                
+                <!-- ПОЛЕ ПАРОЛЯ С КНОПКОЙ-ГЛАЗКОМ -->
+                <div class="form-group-login" style="margin-top: 15px;">
+                    <label for="password">Пароль</label>
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <input type="password" id="password" class="login-control" placeholder="••••••••" style="width: 100%; padding-right: 45px;" required>
+                        
+                        <!-- Переключатель видимости (SVG-глазок) -->
+                        <span id="togglePassword" style="position: absolute; right: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #94a3b8; user-select: none; width: 24px; height: 24px;">
+                            <svg id="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary-custom" style="width: 100%; border: none; margin-top: 25px; padding: 12px; cursor: pointer;">
+                    Войти в личный кабинет
+                </button>
+            </form>
+            
+            <div style="margin-top: 20px; border-top: 1px solid rgba(253, 186, 116, 0.3); padding-top: 20px; text-align: center;">
+                <p style="font-size: 14px; margin-bottom: 10px; color: #000000; font-weight: 500;">Впервые на платформе?</p>
+                <a href="register.html" class="btn-secondary-custom" style="display: block; text-align: center; font-size: 14px; padding: 10px;">
+                    Зарегистрироваться
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 АвтоМаркет. Все права защищены. Платформа автоматизации снабжения B2B и B2C.</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ЗАЩИТА: Принудительно сбрасываем старую авторизацию при заходе на index.html
+            localStorage.setItem('am_user_role', 'guest');
+
+            // 1. ЛОГИКА РАБОТЫ ИНТЕРАКТИВНОГО ГЛАЗКА ПАРОЛЯ
+            const passwordInput = document.getElementById('password');
+            const togglePasswordBtn = document.getElementById('togglePassword');
+            const eyeIcon = document.getElementById('eye-icon');
+
+            if (togglePasswordBtn && passwordInput && eyeIcon) {
+                togglePasswordBtn.addEventListener('click', function() {
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        eyeIcon.innerHTML = `
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                        `;
+                        togglePasswordBtn.style.color = '#ea580c'; 
+                    } else {
+                        passwordInput.type = 'password';
+                        eyeIcon.innerHTML = `
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        `;
+                        togglePasswordBtn.style.color = '#94a3b8'; 
+                    }
+                });
+            }
+
+            // 2. ПОДДЕРЖКА СОХРАНЕНИЯ ГОРОДА
+            const citySelect = document.getElementById('header-city-select');
+            if (citySelect) {
+                const savedCity = localStorage.getItem('am_selected_city');
+                if (savedCity) {
+                    citySelect.value = savedCity;
+                }
+                citySelect.addEventListener('change', function() {
+                    localStorage.setItem('am_selected_city', this.value);
+                });
+            }
+        });
+
+        // 3. ВАЛИДАЦИЯ ВХОДА С ВЫДАЧЕЙ ОФИЦИАЛЬНОГО ДОСТУПА
+        function validateAdminLogin(event) {
+            event.preventDefault();
+
+            const usernameInput = document.getElementById('username').value.trim();
+            const passwordInput = document.getElementById('password').value.trim();
+
+            // Вход для менеджера
+            if (usernameInput === 'manager@mail.ru' && passwordInput === 'admin') {
+                localStorage.setItem('am_user_role', 'manager');
+                localStorage.setItem('am_manager_login', usernameInput);
+                window.location.href = 'manager_panel.html';
+            } 
+            // Вход для клиента
+            else if (usernameInput === '123456@mail.ru' && passwordInput === '123456') {
+                localStorage.setItem('am_user_role', 'client');
+                if (localStorage.getItem('am_user_name') === null) localStorage.setItem('am_user_name', 'Иван Иванович');
+                if (localStorage.getItem('am_user_phone') === null) localStorage.setItem('am_user_phone', '+7 (999) 123-45-67');
+                localStorage.setItem('am_user_login', usernameInput);
+                localStorage.setItem('am_user_balance', '45200');
+
+                window.location.href = 'glavnaya.html';
+            } else {
+                alert('Неверный логин или пароль!');
+            }
+        }
+    </script>
+</body>
+</html>
